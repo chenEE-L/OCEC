@@ -1,8 +1,8 @@
 ocec\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
-ocec\list.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+ocec\list.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
 ocec\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-ocec\list.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-ocec\list.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+ocec\list.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+ocec\list.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
 ocec\list.o: ../Core/Inc/FreeRTOSConfig.h
 ocec\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 ocec\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

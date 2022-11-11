@@ -1,8 +1,8 @@
 ocec\stm32f1xx_it.o: ../Core/Src/stm32f1xx_it.c
 ocec\stm32f1xx_it.o: ../Core/Inc/usart.h
 ocec\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-ocec\stm32f1xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-ocec\stm32f1xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+ocec\stm32f1xx_it.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+ocec\stm32f1xx_it.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
 ocec\stm32f1xx_it.o: ../Core/Inc/FreeRTOSConfig.h
 ocec\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 ocec\stm32f1xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

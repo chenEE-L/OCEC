@@ -8,14 +8,14 @@ ocec\adc.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h
 ocec\adc.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 ocec\adc.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h
 ocec\adc.o: ../Drivers/CMSIS/Include/core_cm3.h
-ocec\adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+ocec\adc.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
 ocec\adc.o: ../Drivers/CMSIS/Include/cmsis_version.h
 ocec\adc.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 ocec\adc.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 ocec\adc.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h
 ocec\adc.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 ocec\adc.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-ocec\adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+ocec\adc.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
 ocec\adc.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
 ocec\adc.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
 ocec\adc.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h

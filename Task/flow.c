@@ -151,7 +151,7 @@ void flowCollectTask(void const * argument)
 				errcnt =0;
 			}
 		}
-		
+			osDelay(1);
 	}
 }
 

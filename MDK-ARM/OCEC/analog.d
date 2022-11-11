@@ -1,8 +1,8 @@
 ocec\analog.o: ..\Task\analog.c
 ocec\analog.o: ..\Task\analog.h
 ocec\analog.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-ocec\analog.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-ocec\analog.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+ocec\analog.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+ocec\analog.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
 ocec\analog.o: ../Core/Inc/FreeRTOSConfig.h
 ocec\analog.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 ocec\analog.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

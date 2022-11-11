@@ -184,6 +184,27 @@ void TIM2_IRQHandler(void)
 /**
   * @brief This function handles USART1 global interrupt.
   */
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+	if(huart->Instance==UART4)//如果是串口4
+	{
+			for(int i=0; i<RXBUFFERSIZE4; i++)
+		{
+			uint8_t data = aRx4Buffer[i];
+			xQueueSendFromISR(COM4DataDelivery, &data, &xHigherPriorityTaskWoken);
+			
+		}
+	}
+	if(huart->Instance==USART3)//如果是串口3
+	{
+			MODS_ReciveNew(*aRx3Buffer);
+
+	}
+
+}
+
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
@@ -213,14 +234,23 @@ void USART2_IRQHandler(void)
   */
 void USART3_IRQHandler(void)
 {
-  /* USER CODE BEGIN USART3_IRQn 0 */
-  /* USER CODE END USART3_IRQn 0 */
-  HAL_UART_IRQHandler(&huart3);
-  /* USER CODE BEGIN USART3_IRQn 1 */
-	HAL_UART_Receive_IT(&huart3, (uint8_t *)aRx3Buffer, RXBUFFERSIZE3);//该函数会开启接收中断：标志位UART_IT_RXNE，并且设置接收缓冲以及接收缓冲接收最大数据量
-	MODS_ReciveNew(*aRx3Buffer);
-
-  /* USER CODE END USART3_IRQn 1 */
+ 	uint32_t timeout=0;
+	HAL_UART_IRQHandler(&huart3);	//调用HAL库中断处理公用函数
+	
+	timeout=0;
+    while (HAL_UART_GetState(&huart3) != HAL_UART_STATE_READY)//等待就绪
+	{
+	 timeout++;////超时处理
+     if(timeout>HAL_MAX_DELAY) break;		
+	
+	}
+     
+	timeout=0;
+	while(HAL_UART_Receive_IT(&huart3, (uint8_t *)aRx3Buffer, RXBUFFERSIZE3) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
+	{
+	 timeout++; //超时处理
+	 if(timeout>HAL_MAX_DELAY) break;	
+	}
 }
 
 /**
@@ -228,23 +258,23 @@ void USART3_IRQHandler(void)
   */
 void UART4_IRQHandler(void)
 {
-		portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
-  /* USER CODE BEGIN UART4_IRQn 0 */
-	if(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_RXNE)!=RESET)  
+	uint32_t timeout=0;
+	HAL_UART_IRQHandler(&huart4);	//调用HAL库中断处理公用函数
+	
+	timeout=0;
+    while (HAL_UART_GetState(&huart4) == HAL_UART_STATE_BUSY_RX)//等待就绪 HAL_UART_STATE_BUSY_RX
 	{
-		for(int i=0; i<RXBUFFERSIZE4; i++)
-		{
-			uint8_t data = aRx4Buffer[i];
-			xQueueSendFromISR(COM4DataDelivery, &data, &xHigherPriorityTaskWoken);
-			
-		}
+	 timeout++;////超时处理
+     if(timeout>HAL_MAX_DELAY) break;		
+	
 	}
-  /* USER CODE END UART4_IRQn 0 */
-  HAL_UART_IRQHandler(&huart4);
-  /* USER CODE BEGIN UART4_IRQn 1 */
-	HAL_UART_Receive_IT(&huart4, (uint8_t *)aRx4Buffer, RXBUFFERSIZE4);//该函数会开启接收中断：标志位UART_IT_RXNE，并且设置接收缓冲以及接收缓冲接收最大数据量
-
-  /* USER CODE END UART4_IRQn 1 */
+     
+	timeout=0;
+	while(HAL_UART_Receive_IT(&huart4, (uint8_t *)aRx4Buffer, RXBUFFERSIZE4) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
+	{
+	 timeout++; //超时处理
+	 if(timeout>HAL_MAX_DELAY) break;	
+	}
 }
 
 /**
@@ -264,4 +294,5 @@ void UART5_IRQHandler(void)
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
+
 
