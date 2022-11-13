@@ -1,7 +1,7 @@
 ocec\flow.o: ..\Task\flow.c
-ocec\flow.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
-ocec\flow.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
-ocec\flow.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdio.h
+ocec\flow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+ocec\flow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+ocec\flow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ocec\flow.o: ..\Task\flow.h
 ocec\flow.o: ../Core/Inc/main.h
 ocec\flow.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
@@ -11,14 +11,14 @@ ocec\flow.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h
 ocec\flow.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 ocec\flow.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h
 ocec\flow.o: ../Drivers/CMSIS/Include/core_cm3.h
-ocec\flow.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+ocec\flow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ocec\flow.o: ../Drivers/CMSIS/Include/cmsis_version.h
 ocec\flow.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 ocec\flow.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 ocec\flow.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h
 ocec\flow.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 ocec\flow.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-ocec\flow.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+ocec\flow.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ocec\flow.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
 ocec\flow.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
 ocec\flow.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h

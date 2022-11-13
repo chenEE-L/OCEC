@@ -170,7 +170,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim)
 	}
 }
 
-
+// us级定时器 目前用于MODBUS判断帧结束,内加补偿
 void bsp_StartHardTimer(uint32_t _uiTimeOut, void * _pCallBack)
 {
     uint32_t cnt_now;

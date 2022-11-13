@@ -18,20 +18,22 @@
 
 extern EventGroupHandle_t flowGroupHandler;	//事件标志组句柄
 
-
-
-typedef struct
+struct para
 {
-	//读参数
-	char addr;
-//	const char span;
 	float pressure;
 	float temp;
 	float cubage;
 	float quality;
 	float set_value_r;
 	char gas_name[8];
-	//写参数
+};
+
+typedef struct
+{
+	//读参数
+	struct  para rx_para;
+	const char addr;
+  const char span;
 	float set_value_w;//所设置流量放大100倍
 }flow_para;
 

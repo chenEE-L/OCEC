@@ -1,8 +1,8 @@
 ocec\usart.o: ../Core/Src/usart.c
 ocec\usart.o: ../Core/Inc/usart.h
 ocec\usart.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-ocec\usart.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
-ocec\usart.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+ocec\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+ocec\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ocec\usart.o: ../Core/Inc/FreeRTOSConfig.h
 ocec\usart.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 ocec\usart.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

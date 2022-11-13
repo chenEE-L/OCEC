@@ -1,7 +1,7 @@
 ocec\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/port.c
 ocec\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-ocec\port.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
-ocec\port.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+ocec\port.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+ocec\port.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ocec\port.o: ../Core/Inc/FreeRTOSConfig.h
 ocec\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 ocec\port.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

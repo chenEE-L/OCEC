@@ -8,14 +8,14 @@ ocec\modbus_slave.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h
 ocec\modbus_slave.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f1xx.h
 ocec\modbus_slave.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h
 ocec\modbus_slave.o: ../Drivers/CMSIS/Include/core_cm3.h
-ocec\modbus_slave.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+ocec\modbus_slave.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ocec\modbus_slave.o: ../Drivers/CMSIS/Include/cmsis_version.h
 ocec\modbus_slave.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 ocec\modbus_slave.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 ocec\modbus_slave.o: ../Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h
 ocec\modbus_slave.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 ocec\modbus_slave.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-ocec\modbus_slave.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+ocec\modbus_slave.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ocec\modbus_slave.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h
 ocec\modbus_slave.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h
 ocec\modbus_slave.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio_ex.h
@@ -44,7 +44,7 @@ ocec\modbus_slave.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 ocec\modbus_slave.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 ocec\modbus_slave.o: ../Core/Inc/usart.h
 ocec\modbus_slave.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
-ocec\modbus_slave.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
+ocec\modbus_slave.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ocec\modbus_slave.o: ../Core/Inc/gpio.h
 ocec\modbus_slave.o: ..\Task\flow.h
 ocec\modbus_slave.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h

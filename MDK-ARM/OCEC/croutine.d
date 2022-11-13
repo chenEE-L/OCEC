@@ -1,7 +1,7 @@
 ocec\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/croutine.c
 ocec\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-ocec\croutine.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
-ocec\croutine.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+ocec\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+ocec\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ocec\croutine.o: ../Core/Inc/FreeRTOSConfig.h
 ocec\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 ocec\croutine.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

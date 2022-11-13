@@ -1,8 +1,8 @@
 ocec\iwdt.o: ..\Task\iwdt.c
 ocec\iwdt.o: ..\Task\iwdt.h
 ocec\iwdt.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-ocec\iwdt.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
-ocec\iwdt.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+ocec\iwdt.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+ocec\iwdt.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ocec\iwdt.o: ../Core/Inc/FreeRTOSConfig.h
 ocec\iwdt.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 ocec\iwdt.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h

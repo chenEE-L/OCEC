@@ -545,43 +545,43 @@ static uint8_t MODS_ReadRegValue(uint16_t reg_addr, uint8_t *reg_value)
 	switch (reg_addr)									/* ÅÐ¶Ï¼Ä´æÆ÷µØÖ· */
 	{
 		case SLAVE_REG_P01:
-			value =	((uint16_t*)(&DeviceA.quality))[1];	
+			value =	((uint16_t*)(&DeviceA.rx_para.quality))[1];	
 			break;
 
 		case SLAVE_REG_P02:
-			value =	((uint16_t*)(&DeviceA.quality))[0];	
+			value =	((uint16_t*)(&DeviceA.rx_para.quality))[0];	
 			break;
 		
 		case SLAVE_REG_P03:
-			value =	((uint16_t*)(&DeviceB.quality))[1];	
+			value =	((uint16_t*)(&DeviceB.rx_para.quality))[1];	
 			break;
 
 		case SLAVE_REG_P04:
-			value =	((uint16_t*)(&DeviceB.quality))[0];	
+			value =	((uint16_t*)(&DeviceB.rx_para.quality))[0];	
 			break;
 		
 		case SLAVE_REG_P05:
-			value =	((uint16_t*)(&DeviceC.quality))[1];	
+			value =	((uint16_t*)(&DeviceC.rx_para.quality))[1];	
 			break;
 
 		case SLAVE_REG_P06:
-			value =	((uint16_t*)(&DeviceC.quality))[0];	
+			value =	((uint16_t*)(&DeviceC.rx_para.quality))[0];	
 			break;
 		
 		case SLAVE_REG_P07:
-			value =	((uint16_t*)(&DeviceD.quality))[1];	
+			value =	((uint16_t*)(&DeviceD.rx_para.quality))[1];	
 			break;
 
 		case SLAVE_REG_P08:
-			value =	((uint16_t*)(&DeviceD.quality))[0];	
+			value =	((uint16_t*)(&DeviceD.rx_para.quality))[0];	
 			break;
 		
 		case SLAVE_REG_P09:
-			value =	((uint16_t*)(&DeviceE.quality))[1];	
+			value =	((uint16_t*)(&DeviceE.rx_para.quality))[1];	
 			break;
 
 		case SLAVE_REG_P10:
-			value =	((uint16_t*)(&DeviceE.quality))[0];	
+			value =	((uint16_t*)(&DeviceE.rx_para.quality))[0];	
 			break;
 
 		case SLAVE_REG_P11:

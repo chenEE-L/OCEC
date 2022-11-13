@@ -262,7 +262,7 @@ void UART4_IRQHandler(void)
 	HAL_UART_IRQHandler(&huart4);	//调用HAL库中断处理公用函数
 	
 	timeout=0;
-    while (HAL_UART_GetState(&huart4) == HAL_UART_STATE_BUSY_RX)//等待就绪 HAL_UART_STATE_BUSY_RX
+    while (HAL_UART_GetState(&huart4) == HAL_UART_STATE_BUSY_RX)//等待接收空闲 HAL_UART_STATE_BUSY_RX
 	{
 	 timeout++;////超时处理
      if(timeout>HAL_MAX_DELAY) break;		

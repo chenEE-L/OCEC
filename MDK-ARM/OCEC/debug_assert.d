@@ -1,9 +1,9 @@
 ocec\debug_assert.o: ..\Core\Src\debug_assert.c
-ocec\debug_assert.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+ocec\debug_assert.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ocec\debug_assert.o: ../Core/Inc/debug_assert.h
 ocec\debug_assert.o: ../Core/Inc/usart.h
 ocec\debug_assert.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
-ocec\debug_assert.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+ocec\debug_assert.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ocec\debug_assert.o: ../Core/Inc/FreeRTOSConfig.h
 ocec\debug_assert.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
 ocec\debug_assert.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
