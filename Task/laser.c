@@ -19,11 +19,11 @@ laser_para laserPWM;
 
 void laser_init()
 {
-	 MX_TIM4_Init();// 20HZ ,50%
+	 MX_TIM4_Init();// 10HZ ,50%
 	
 	laserGroupHandler=xEventGroupCreate();	
 	ASSERT(laserGroupHandler);
-	laserPWM.frequency = 20;
+	laserPWM.frequency = 10;
 	laserPWM.duty =50;
 	
 }
@@ -51,7 +51,7 @@ void laserControlTask(void const * argument)
 					case laser_Frequency_Bit:
 						f = laserPWM.frequency;
 						f = 10000/f;
-						__HAL_TIM_SET_AUTORELOAD(&htim4, f-1);
+						__HAL_TIM_SET_AUTORELOAD(&htim4, f-1);  //设置重装载值
 						xEventGroupClearBits(laserGroupHandler,laser_Frequency_Bit);
 						xEventGroupSetBits(laserGroupHandler,laser_Duty_Bit);//设置重装载值后需要重新设置占空比
 
@@ -60,7 +60,7 @@ void laserControlTask(void const * argument)
 						f = laserPWM.frequency;
 						f = 10000/f;
 						d = f/100*laserPWM.duty;
-						__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, d);
+						__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, d);  //设置比较值
 						xEventGroupClearBits(laserGroupHandler,laser_Duty_Bit);
 						break;
 					default:

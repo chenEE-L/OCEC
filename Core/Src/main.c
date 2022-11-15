@@ -110,6 +110,7 @@ int main(void)
 	laser_init();
 	flow_init();
 	logic_init();
+	analogCollect_Init();
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

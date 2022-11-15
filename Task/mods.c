@@ -15,7 +15,7 @@
 
 
 
-TimerHandle_t	OneShotTimer_Handle;			//单次定时器句柄
+//TimerHandle_t	OneShotTimer_Handle;			//单次定时器句柄
 
 void MODSInit(void)
 {

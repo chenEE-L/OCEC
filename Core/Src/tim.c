@@ -19,8 +19,11 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "tim.h"
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 /* USER CODE BEGIN 0 */
+extern SemaphoreHandle_t singleDateDealSemaphore;	//二值信号量句柄
 
 /* USER CODE END 0 */
 
@@ -43,13 +46,17 @@ void MX_TIM4_Init(void)
   htim4.Instance = TIM4;
   htim4.Init.Prescaler = 7200-1;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 500-1;
+  htim4.Init.Period = 1000-1;                  //72M/7200=10K的计数频率，自动重装载为1000，那么PWM频率为10000/1000=10
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	
+	HAL_TIM_Base_Start_IT(&htim4); //使能定时器4和定时器4更新中断：TIM_IT_UPDATE   
+
   if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
   {
     Error_Handler();
   }
+
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
@@ -58,7 +65,7 @@ void MX_TIM4_Init(void)
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 250;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
@@ -69,6 +76,7 @@ void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 2 */
   HAL_TIM_MspPostInit(&htim4);
+	
 
 }
 
@@ -83,7 +91,8 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
     /* TIM4 clock enable */
     __HAL_RCC_TIM4_CLK_ENABLE();
   /* USER CODE BEGIN TIM4_MspInit 1 */
-
+    HAL_NVIC_SetPriority(TIM4_IRQn, 5, 0);
+    HAL_NVIC_EnableIRQ(TIM4_IRQn);
   /* USER CODE END TIM4_MspInit 1 */
   }
 }
@@ -130,6 +139,11 @@ void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef* tim_pwmHandle)
 }
 
 /* USER CODE BEGIN 1 */
+
+void TIM4_IRQHandler(void)
+{
+    HAL_TIM_IRQHandler(&htim4);
+}
 
 
 /***********************************************************************************/
@@ -223,6 +237,7 @@ void TIM3_IRQHandler(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
+	BaseType_t xHigherPriorityTaskWoken;
 
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM2) {
@@ -234,6 +249,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 		/* 先关闭中断，再执行回调函数。因为回调函数可能需要重启定时器 */
 		s_TIM_CallBack();
+  }
+	if (htim->Instance == TIM4) {
+		
+		xSemaphoreGiveFromISR(singleDateDealSemaphore,&xHigherPriorityTaskWoken);	//释放二值信号量
   }
   /* USER CODE END Callback 1 */
 }
