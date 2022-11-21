@@ -62,25 +62,25 @@ static uint8_t readCmd[Device_NUM][CMD_bNUM] =  {{'A',0x0d,0x0a,0x0d,'\0'},
 
 void flow_init()
 {
-	DeviceA.rx_para.pressure = 0;
-	DeviceA.rx_para.set_value_r = 0;
-	DeviceA.set_value_w = 0;
-	
-	DeviceB.rx_para.pressure = 0;
-	DeviceB.rx_para.set_value_r = 0;
-	DeviceB.set_value_w = 0;
-	
-	DeviceC.rx_para.pressure = 0;
-	DeviceC.rx_para.set_value_r = 0;
-	DeviceC.set_value_w = 0;
-	
-	DeviceD.rx_para.pressure = 0;
-	DeviceD.rx_para.set_value_r = 0;
-	DeviceD.set_value_w = 0;
-	
-	DeviceE.rx_para.pressure = 0;
-	DeviceE.rx_para.set_value_r = 0;
-	DeviceE.set_value_w = 0;     //  Á÷Á¿¼Æ²ÎÊı³õÊ¼»¯ 
+//	DeviceA.rx_para.pressure = 0;
+//	DeviceA.rx_para.set_value_r = 0;
+//	DeviceA.set_value_w = 0;
+//	
+//	DeviceB.rx_para.pressure = 0;
+//	DeviceB.rx_para.set_value_r = 0;
+//	DeviceB.set_value_w = 0;
+//	
+//	DeviceC.rx_para.pressure = 0;
+//	DeviceC.rx_para.set_value_r = 0;
+//	DeviceC.set_value_w = 0;
+//	
+//	DeviceD.rx_para.pressure = 0;
+//	DeviceD.rx_para.set_value_r = 0;
+//	DeviceD.set_value_w = 0;
+//	
+//	DeviceE.rx_para.pressure = 0;
+//	DeviceE.rx_para.set_value_r = 0;
+//	DeviceE.set_value_w = 0;     //  Á÷Á¿¼Æ²ÎÊı³õÊ¼»¯ 
 	
 	
 	flowGroupHandler=xEventGroupCreate();	// Á÷Á¿ÉèÖÃÊÂ¼ş×é
@@ -91,11 +91,11 @@ void flow_init()
 
 
 
-
 /* USER CODE END Header_flowCollectTask */
 void flowCollectTask(void const * argument)  //Á÷Á¿¼ÆÁ÷Á¿»ñÈ¡ÈÎÎñ,¸ù¾İĞèÒªÈ·¶¨²É¼¯ÖÜÆÚ£¿
 {
   /* USER CODE BEGIN flowCollectTask */
+	
   /* Infinite loop */	
 	uint8_t tx_flag = 1; //»ñÈ¡Á÷Á¿²ÎÊıÖ¸Áî·¢ËÍ±êÖ¾Î»,ÖÃ1Îª´¦ÀíÍê½ÓÊÕÊı¾İ£¬¿É»ñÈ¡ÏÂÒ»Éè±¸×´Ì¬
 	uint8_t c;
@@ -112,7 +112,8 @@ void flowCollectTask(void const * argument)  //Á÷Á¿¼ÆÁ÷Á¿»ñÈ¡ÈÎÎñ,¸ù¾İĞèÒªÈ·¶¨²É
 		{
 			tx_flag = 0;
 			if(i>=Device_NUM) i = 0; //Éè±¸¶ÁÈ¡Íê±Ï£¬ÖØĞÂ¶ÁÈ¡Ê×¸öÉè±¸Êı¾İ
-			HAL_UART_Transmit(&huart4,readCmd[i],CMD_bNUM-1,1000);	//·¢ËÍID¶ÁÈ¡Á÷Á¿¼ÆÊı¾İ
+//			HAL_UART_Transmit(&huart4,readCmd[i],CMD_bNUM-1,1000);	//·¢ËÍID¶ÁÈ¡Á÷Á¿¼ÆÊı¾İ
+			HAL_UART_Transmit_IT(&huart4,readCmd[i],CMD_bNUM-1);	//·¢ËÍID¶ÁÈ¡Á÷Á¿¼ÆÊı¾İ
    		while(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_TC)!=SET);		//µÈ´ı·¢ËÍ½áÊø
 		}
 		
@@ -133,12 +134,20 @@ void flowCollectTask(void const * argument)  //Á÷Á¿¼ÆÁ÷Á¿»ñÈ¡ÈÎÎñ,¸ù¾İĞèÒªÈ·¶¨²É
 					date[command_data_length++] = c;
 					if((c ==0x0a)||(c ==0x0d)) //½ÓÊÕÊı¾İÍê±Ï
 					{
-						atkpAnalyze(date);  //½âÎöÊı¾İ
+						if(command_data_length>40)
+						{
+							atkpAnalyze(date);  //½âÎöÊı¾İ
+							i++;                // ¶ÁÈ¡ÏÂÒ»¸öÉè±¸
+						}
 						rxState = waitForID;
 						command_data_length = 0;
 						tx_flag = 1;
-						i++;
-						osDelay(50); // ÑÓÊ±ÊÇ·ñ±ØÒª£¿¿ÉÈ¥µô£¿´ı²âÊÔ
+					}
+					if(command_data_length>50) //Î´½Óµ½½áÊø·ûÇÒ½ÓÊÕÊı¾İ´íÎó
+					{
+						rxState = waitForID;
+						command_data_length = 0;
+						tx_flag = 1;
 					}
 					break;
 				default:
@@ -155,7 +164,7 @@ void flowCollectTask(void const * argument)  //Á÷Á¿¼ÆÁ÷Á¿»ñÈ¡ÈÎÎñ,¸ù¾İĞèÒªÈ·¶¨²É
 				errcnt =0;
 			}
 		}
-			osDelay(1); 
+			osDelay(5); 
 	}
 }
 
@@ -253,7 +262,6 @@ static int gps_extract_field(char *buff,char *field[],char delimiter,short field
 void flowSetTask(void const * argument)  //¸ù¾İ·´À¡µÄÊÂ¼ş×é±êÖ¾ÉèÖÃÏàÓ¦Éè±¸µÄÁ÷Á¿
 {
 		EventBits_t EventValue;
-
 	  for(;;)
   {
 		if(flowGroupHandler!=NULL)
@@ -262,23 +270,23 @@ void flowSetTask(void const * argument)  //¸ù¾İ·´À¡µÄÊÂ¼ş×é±êÖ¾ÉèÖÃÏàÓ¦Éè±¸µÄÁ÷Á
 			switch((uint8_t)EventValue)
 			{
 				case flow1_Device_Bit:
-					setFlow(DeviceA,DeviceA.set_value_w);
+					setFlow(&DeviceA,DeviceA.set_value_w);
 				xEventGroupClearBits(flowGroupHandler,flow1_Device_Bit);
 					break;
 				case flow2_Device_Bit:
-					setFlow(DeviceB,DeviceB.set_value_w);
+					setFlow(&DeviceB,DeviceB.set_value_w);
 				xEventGroupClearBits(flowGroupHandler,flow2_Device_Bit);
 					break;
 				case flow3_Device_Bit:
-					setFlow(DeviceC,DeviceC.set_value_w);
+					setFlow(&DeviceC,DeviceC.set_value_w);
 				xEventGroupClearBits(flowGroupHandler,flow3_Device_Bit);
 					break;
 				case flow4_Device_Bit:
-					setFlow(DeviceD,DeviceD.set_value_w);
+					setFlow(&DeviceD,DeviceD.set_value_w);
 				xEventGroupClearBits(flowGroupHandler,flow4_Device_Bit);
 					break;
 				case flow5_Device_Bit:
-					setFlow(DeviceE,DeviceE.set_value_w);
+					setFlow(&DeviceE,DeviceE.set_value_w);
 				xEventGroupClearBits(flowGroupHandler,flow5_Device_Bit);
 					break;
 				default:
@@ -299,22 +307,23 @@ static uint8_t alicat_init[10]={'A',0x36,0x34,0x30,0x30,0x30,0x0d,0x0a,0x0d,'\0'
 
 
 
-void setFlow(flow_para p ,float flow_rate)
+void setFlow(flow_para *p ,float flow_rate)
 {
 	uint16_t flow;
-	
-	flow = (uint16_t)((flow_rate/p.span)*64000);
+	flow = (uint16_t)((flow_rate/p->span)*64000);
 	if(flow>64000)
 	{
 			flow = 64000;
 	}
-	alicat_init[0] = p.addr;
+	alicat_init[0] = p->addr;
 	alicat_init[1] = flow/10000+0x30;
 	alicat_init[2] = flow/1000%10+0x30;
 	alicat_init[3] = flow/100%10+0x30;
 	alicat_init[4] = flow/10%10+0x30;
 	alicat_init[5] = flow%10+0x30;
-	HAL_UART_Transmit(&huart4,alicat_init,10,1000);	//ÉèÖÃÁ÷Á¿
+	HAL_UART_Transmit_IT(&huart4,alicat_init,10);	//ÉèÖÃÁ÷Á¿
+  while(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_TC)!=SET);		//µÈ´ı·¢ËÍ½áÊø
+	osDelay(500);   // Á½¸öÁ÷Á¿¼ÆÖ®¼ä×îÉÙ500ms²ÅÄÜ¿ØÖÆ
 }
 
 void closeAllFlow()
@@ -324,13 +333,14 @@ void closeAllFlow()
 	for(i = 'A';i <= 'E';i++)
 	{
 	alicat_init[0] = i;
-	alicat_init[1] = 0;
-	alicat_init[2] = 0;
-	alicat_init[3] = 0;
-	alicat_init[4] = 0;
-	alicat_init[5] = 0;
-	HAL_UART_Transmit(&huart4,alicat_init,10,1000);
-  osDelay(10);
+	alicat_init[1] = '0';
+	alicat_init[2] = '0';
+	alicat_init[3] = '0';
+	alicat_init[4] = '0';
+	alicat_init[5] = '0';
+	HAL_UART_Transmit_IT(&huart4,alicat_init,10);
+  while(__HAL_UART_GET_FLAG(&huart4,UART_FLAG_TC)!=SET);
+	osDelay(500);
 	}
 	
 }

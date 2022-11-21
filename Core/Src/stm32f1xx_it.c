@@ -187,20 +187,47 @@ void TIM2_IRQHandler(void)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+	uint32_t timeout=0;
 	portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
 	if(huart->Instance==UART4)//如果是串口4
 	{
-			for(int i=0; i<RXBUFFERSIZE4; i++)
+		for(int i=0; i<RXBUFFERSIZE4; i++)
 		{
 			uint8_t data = aRx4Buffer[i];
 			xQueueSendFromISR(COM4DataDelivery, &data, &xHigherPriorityTaskWoken);
 			
 		}
+		timeout=0;
+		while (HAL_UART_GetState(&huart4) == HAL_UART_STATE_BUSY_RX)//等待接收空闲 HAL_UART_STATE_BUSY_RX
+		{
+			timeout++;////超时处理
+			if(timeout>HAL_MAX_DELAY) break;		
+		}
+		timeout=0;
+		while(HAL_UART_Receive_IT(&huart4, (uint8_t *)aRx4Buffer, RXBUFFERSIZE4) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
+		{
+			timeout++; //超时处理
+			if(timeout>HAL_MAX_DELAY) break;	
+		}
 	}
+	
 	if(huart->Instance==USART3)//如果是串口3
 	{
 			MODS_ReciveNew(*aRx3Buffer);
-
+			timeout=0;
+		 while (HAL_UART_GetState(&huart3)== HAL_UART_STATE_BUSY_RX)//等待接收空闲 HAL_UART_STATE_BUSY_RX
+		{
+		 timeout++;////超时处理
+			if(timeout>HAL_MAX_DELAY) break;		
+		
+		}
+			 
+		timeout=0;
+		while(HAL_UART_Receive_IT(&huart3, (uint8_t *)aRx3Buffer, RXBUFFERSIZE3) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
+		{
+		 timeout++; //超时处理
+		 if(timeout>HAL_MAX_DELAY) break;	
+		}
 	}
 
 }
@@ -234,23 +261,9 @@ void USART2_IRQHandler(void)
   */
 void USART3_IRQHandler(void)
 {
- 	uint32_t timeout=0;
 	HAL_UART_IRQHandler(&huart3);	//调用HAL库中断处理公用函数
 	
-	timeout=0;
-    while (HAL_UART_GetState(&huart3) != HAL_UART_STATE_READY)//等待就绪
-	{
-	 timeout++;////超时处理
-     if(timeout>HAL_MAX_DELAY) break;		
-	
-	}
-     
-	timeout=0;
-	while(HAL_UART_Receive_IT(&huart3, (uint8_t *)aRx3Buffer, RXBUFFERSIZE3) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
-	{
-	 timeout++; //超时处理
-	 if(timeout>HAL_MAX_DELAY) break;	
-	}
+
 }
 
 /**
@@ -258,23 +271,9 @@ void USART3_IRQHandler(void)
   */
 void UART4_IRQHandler(void)
 {
-	uint32_t timeout=0;
 	HAL_UART_IRQHandler(&huart4);	//调用HAL库中断处理公用函数
 	
-	timeout=0;
-    while (HAL_UART_GetState(&huart4) == HAL_UART_STATE_BUSY_RX)//等待接收空闲 HAL_UART_STATE_BUSY_RX
-	{
-	 timeout++;////超时处理
-     if(timeout>HAL_MAX_DELAY) break;		
-	
-	}
-     
-	timeout=0;
-	while(HAL_UART_Receive_IT(&huart4, (uint8_t *)aRx4Buffer, RXBUFFERSIZE4) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
-	{
-	 timeout++; //超时处理
-	 if(timeout>HAL_MAX_DELAY) break;	
-	}
+
 }
 
 /**

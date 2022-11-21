@@ -129,7 +129,7 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  osThreadDef(logicContro, logicControTask, osPriorityNormal, 0, 128);
+  osThreadDef(logicContro, logicControTask, osPriorityBelowNormal, 0, 128);
   logicControHandle = osThreadCreate(osThread(logicContro), NULL);
   /* USER CODE END RTOS_THREADS */
 

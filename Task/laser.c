@@ -23,9 +23,9 @@ void laser_init()
 	
 	laserGroupHandler=xEventGroupCreate();	
 	ASSERT(laserGroupHandler);
-	laserPWM.frequency = 10;
+	laserPWM.frequency = 5;
 	laserPWM.duty =50;
-	
+
 }
 
 
@@ -35,16 +35,14 @@ void laserControlTask(void const * argument)
 	EventBits_t EventValue = 0;
 
   /* USER CODE BEGIN temCollectTask */
+
+
   /* Infinite loop */
    for(;;)
   {
 		if(laserGroupHandler!=NULL)
 		{
-//			EventValue =xEventGroupWaitBits((EventGroupHandle_t	)laserGroupHandler,		
-//								 (EventBits_t			)EVENTBIT_ALL_LASER,
-//								 (BaseType_t			)pdTRUE,				
-//								 (BaseType_t			)pdTRUE,
-//								 (TickType_t			)portMAX_DELAY);	
+
 				EventValue=xEventGroupGetBits(laserGroupHandler);	//获取事件组的
 				switch((uint8_t)EventValue)
 				{

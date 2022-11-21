@@ -242,7 +242,8 @@ static void MODS_SendWithCRC(uint8_t *_pBuf, uint8_t _ucLen)
 	buf[_ucLen++] = crc >> 8;
 	buf[_ucLen++] = crc;
 	
-	HAL_UART_Transmit(&huart3,buf,_ucLen,1000);	//发送
+	HAL_UART_Transmit_IT(&huart3,buf,_ucLen);	//发送
+  while(__HAL_UART_GET_FLAG(&huart3,UART_FLAG_TC)!=SET);		//等待发送结束
 	
 #if 0									/* 此部分为了串口打印结果,实际运用中可不要 */
 	g_tPrint.Txlen = _ucLen;

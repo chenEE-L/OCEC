@@ -1172,7 +1172,7 @@ HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, uint8_t *pData, u
     }
 
     /* Process Unlocked */
-    __HAL_UNLOCK(huart);
+    __HAL_UNLOCK(huart); //¹Ø±ÕÉÏËø
 
     while (huart->TxXferCount > 0U)
     {
@@ -1368,7 +1368,7 @@ HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData,
     }
 
     /* Process Locked */
-//    __HAL_LOCK(huart);  ×¢ÊÍµô£¬±ÜÃâËÀËøÎÊÌâ
+//    __HAL_LOCK(huart);  
 
     huart->pRxBuffPtr = pData;
     huart->RxXferSize = Size;

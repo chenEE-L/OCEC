@@ -98,7 +98,7 @@ int main(void)
   MX_GPIO_Init();
   MX_ADC1_Init();
   MX_SPI3_Init();
-  MX_TIM4_Init();
+//  MX_TIM4_Init(); 在laser_init内进行初始化
   MX_UART4_Init();
   MX_UART5_Init();
   MX_USART1_UART_Init();

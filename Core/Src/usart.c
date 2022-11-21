@@ -48,7 +48,7 @@ void MX_UART4_Init(void)
 {
 
   /* USER CODE BEGIN UART4_Init 0 */
-	COM4DataDelivery = xQueueCreate(128, sizeof(uint8_t));
+	COM4DataDelivery = xQueueCreate(128, sizeof(uint8_t)); 
 
   /* USER CODE END UART4_Init 0 */
 

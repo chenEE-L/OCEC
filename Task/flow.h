@@ -44,7 +44,7 @@ extern flow_para DeviceD;
 extern flow_para DeviceE;
 
 void flow_init(void);
-void setFlow(flow_para p ,float flow_rate);
+void setFlow(flow_para *p ,float flow_rate);
 void flowCollectTask(void const * argument);
 void flowSetTask(void const * argument);
 void closeAllFlow(void);

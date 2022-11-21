@@ -14,8 +14,6 @@
         <TargetCommonOption>
           <Device>STM32F103RE</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F1xx_DFP.1.0.5</PackID>
-          <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IRAM(0x20000000-0x2000FFFF) IROM(0x8000000-0x807FFFF) CLOCK(8000000) CPUTYPE("Cortex-M3")</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -145,6 +143,7 @@
             <RestoreToolbox>1</RestoreToolbox>
             <RestoreTracepoints>1</RestoreTracepoints>
             <RestoreSysVw>1</RestoreSysVw>
+            <UsePdscDebugDescription>1</UsePdscDebugDescription>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
           <TargetSelection>6</TargetSelection>
@@ -654,6 +653,11 @@
               <FilePath>..\Task\iwdt.c</FilePath>
             </File>
             <File>
+              <FileName>logic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Task\logic.c</FilePath>
+            </File>
+            <File>
               <FileName>laser.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Task\laser.c</FilePath>
@@ -662,11 +666,6 @@
               <FileName>analog.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Task\analog.c</FilePath>
-            </File>
-            <File>
-              <FileName>logic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Task\logic.c</FilePath>
             </File>
           </Files>
         </Group>

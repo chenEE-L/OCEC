@@ -43,7 +43,7 @@ void modsUpdateTask(void const * argument)
 
 			MODS_Poll();
 			
-			osDelay(10);
+			osDelay(5);
 		}
 		/* USER CODE END temCollectTask */
 }
