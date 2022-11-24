@@ -106,7 +106,6 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 	TIM3_Init();
-	MODSInit();
 	laser_init();
 	flow_init();
 	logic_init();

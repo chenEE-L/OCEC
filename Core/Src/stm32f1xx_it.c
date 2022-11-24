@@ -16,7 +16,9 @@
   ******************************************************************************
   */
 #include "usart.h"
-#include "modbus_slave.h"
+#include "mods.h"
+#include "CO2.h"
+
 
 /* USER CODE END Header */
 
@@ -224,6 +226,24 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			 
 		timeout=0;
 		while(HAL_UART_Receive_IT(&huart3, (uint8_t *)aRx3Buffer, RXBUFFERSIZE3) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
+		{
+		 timeout++; //超时处理
+		 if(timeout>HAL_MAX_DELAY) break;	
+		}
+	}
+	if(huart->Instance==USART2)//如果是串口3
+	{
+			MODH_ReciveNew(*aRx2Buffer);
+			timeout=0;
+		 while (HAL_UART_GetState(&huart2)== HAL_UART_STATE_BUSY_RX)//等待接收空闲 HAL_UART_STATE_BUSY_RX
+		{
+		 timeout++;////超时处理
+			if(timeout>HAL_MAX_DELAY) break;		
+		
+		}
+			 
+		timeout=0;
+		while(HAL_UART_Receive_IT(&huart2, (uint8_t *)aRx2Buffer, RXBUFFERSIZE2) != HAL_OK)//一次处理完成之后，重新开启中断并设置RxXferCount为1
 		{
 		 timeout++; //超时处理
 		 if(timeout>HAL_MAX_DELAY) break;	

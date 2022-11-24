@@ -58,6 +58,7 @@ osThreadId analogCollectHandle;
 osThreadId modsUpdateHandle;
 osThreadId flowSetHandle;
 osThreadId iwdtHandle;
+osThreadId CO2UpdateHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -73,6 +74,7 @@ void analogCollectTask(void const * argument);
 void modsUpdateTask(void const * argument);
 void flowSetTask(void const * argument);
 void iwdtTask(void const * argument);
+void CO2UpdateTask(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -131,6 +133,9 @@ void MX_FREERTOS_Init(void) {
   /* add threads, ... */
   osThreadDef(logicContro, logicControTask, osPriorityBelowNormal, 0, 128);
   logicControHandle = osThreadCreate(osThread(logicContro), NULL);
+	
+	 osThreadDef(CO2Update, CO2UpdateTask, osPriorityBelowNormal, 0, 128);
+  CO2UpdateHandle = osThreadCreate(osThread(CO2Update), NULL);
   /* USER CODE END RTOS_THREADS */
 
 }

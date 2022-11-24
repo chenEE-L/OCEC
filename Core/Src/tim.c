@@ -91,7 +91,7 @@ void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* tim_pwmHandle)
     /* TIM4 clock enable */
     __HAL_RCC_TIM4_CLK_ENABLE();
   /* USER CODE BEGIN TIM4_MspInit 1 */
-    HAL_NVIC_SetPriority(TIM4_IRQn, 5, 0);
+    HAL_NVIC_SetPriority(TIM4_IRQn, 5, 5);
     HAL_NVIC_EnableIRQ(TIM4_IRQn);
   /* USER CODE END TIM4_MspInit 1 */
   }
@@ -149,43 +149,65 @@ void TIM4_IRQHandler(void)
 /***********************************************************************************/
 
 TIM_HandleTypeDef TIM3_Handler;      //定时器句柄 
-static void (*s_TIM_CallBack)(void);
+TIM_OC_InitTypeDef 	TIM3_CH2Handler;	//定时器3通道2句柄
+TIM_OC_InitTypeDef 	TIM3_CH3Handler;	//定时器3通道3句柄
+
+static void (*s_TIM_CallBack2)(void);
+static void (*s_TIM_CallBack3)(void);
 
 
 void TIM3_Init()
 {  
-		uint32_t usPeriod;
-		uint16_t usPrescaler;
-		uint32_t uiTIMxCLK;
-	
-		uiTIMxCLK = SystemCoreClock / 2;
-		usPrescaler = uiTIMxCLK / 1000000 ;	/* 分频到周期 1us */
-	
-		usPeriod = 0xFFFF;
-
 	
     TIM3_Handler.Instance=TIM3;                          //通用定时器3
-    TIM3_Handler.Init.Prescaler=usPrescaler;                     //分频系数
+    TIM3_Handler.Init.Prescaler=72-1;                     //分频系数
     TIM3_Handler.Init.CounterMode=TIM_COUNTERMODE_UP;    //向上计数器
-    TIM3_Handler.Init.Period=usPeriod;                        //自动装载值
+    TIM3_Handler.Init.Period=0xFFFE;                        //自动装载值
     TIM3_Handler.Init.ClockDivision=TIM_CLOCKDIVISION_DIV1;//时钟分频因子
-    HAL_TIM_Base_Init(&TIM3_Handler);
-    
-//    HAL_TIM_Base_Start_IT(&TIM3_Handler); //使能定时器3和定时器3更新中断：TIM_IT_UPDATE   
+//		HAL_TIM_Base_Start_IT(&TIM3_Handler); //使能定时器3和定时器3更新中断：TIM_IT_UPDATE
+//	  HAL_TIM_Base_Init(&TIM3_Handler);
+		HAL_TIM_OC_Init(&TIM3_Handler);
+
+    TIM3_CH2Handler.OCMode=TIM_OCMODE_TIMING; //
+		HAL_TIM_OC_ConfigChannel(&TIM3_Handler,&TIM3_CH2Handler,TIM_CHANNEL_2);
+//		HAL_TIM_OC_Start(&TIM3_Handler,TIM_CHANNEL_2);
+//		HAL_TIM_OC_Start_IT(&TIM3_Handler, TIM_CHANNEL_2);
+
+	  TIM3_CH3Handler.OCMode=TIM_OCMODE_TIMING; //
+		HAL_TIM_OC_ConfigChannel(&TIM3_Handler,&TIM3_CH3Handler,TIM_CHANNEL_3);
+//		HAL_TIM_OC_Start(&TIM3_Handler,TIM_CHANNEL_3);
+//		HAL_TIM_OC_Start_IT(&TIM3_Handler, TIM_CHANNEL_3);
+
 }
 
-void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim)
+//定时器底册驱动，开启时钟，设置中断优先级
+//此函数会被HAL_TIM_Base_Init()函数调用
+
+void HAL_TIM_OC_MspInit(TIM_HandleTypeDef *htim)
 {
     if(htim->Instance==TIM3)
 	{
 		__HAL_RCC_TIM3_CLK_ENABLE();            //使能TIM3时钟
-		HAL_NVIC_SetPriority(TIM3_IRQn,1,3);    //设置中断优先级，抢占优先级1，子优先级3
+		HAL_NVIC_SetPriority(TIM3_IRQn,5,3);    //设置中断优先级，抢占优先级1，子优先级3
 		HAL_NVIC_EnableIRQ(TIM3_IRQn);          //开启ITM3中断   
 	}
+
 }
 
+
 // us级定时器 目前用于MODBUS判断帧结束,内加补偿
-void bsp_StartHardTimer(uint32_t _uiTimeOut, void * _pCallBack)
+
+void TIM_SetTIM3Compare2(uint32_t compare)
+{
+	TIM3->CCR2=compare; 
+}
+void TIM_SetTIM3Compare3(uint32_t compare)
+{
+	TIM3->CCR3=compare; 
+}
+
+
+void bsp_StartHardTimer(uint8_t _CC, uint32_t _uiTimeOut, void * _pCallBack)
 {
     uint32_t cnt_now;
     uint32_t cnt_tar;
@@ -205,35 +227,54 @@ void bsp_StartHardTimer(uint32_t _uiTimeOut, void * _pCallBack)
 
     cnt_now = __HAL_TIM_GetCounter(&TIM3_Handler);    	/* 读取当前的计数器值 */
     cnt_tar = cnt_now + _uiTimeOut;			/* 计算捕获的计数器值 */
-
-		s_TIM_CallBack = (void (*)(void))_pCallBack;
-		__HAL_TIM_SetCounter(&TIM3_Handler, cnt_tar);      	/* 设置捕获比较计数器CC1 */
-//		TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
-//		TIM_ITConfig(TIM3, TIM_IT_CC1, ENABLE);	/* 使能CC1中断 */
-		HAL_TIM_Base_Start_IT(&TIM3_Handler); //使能定时器3和定时器3更新中断：TIM_IT_UPDATE   
-
-  
+    if (_CC == 2)
+    {
+        s_TIM_CallBack2 = (void (*)(void))_pCallBack;
+				TIM_SetTIM3Compare2(cnt_tar);	//修改比较值，修改占空比
+				HAL_TIM_OC_Start_IT(&TIM3_Handler, TIM_CHANNEL_2);
+    }
+    else if (_CC == 3)
+    {
+        s_TIM_CallBack3 = (void (*)(void))_pCallBack;
+				TIM_SetTIM3Compare3(cnt_tar);	//修改比较值，修改占空比
+				HAL_TIM_OC_Start_IT(&TIM3_Handler, TIM_CHANNEL_3);
+    }
+		else
+    {
+        return;
+    }
 }
-
-
 
 //定时器3中断服务函数
 void TIM3_IRQHandler(void)
 {
+
     HAL_TIM_IRQHandler(&TIM3_Handler);
 }
 
-////回调函数，定时器中断服务函数调用
-//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-//{
-//    if(htim==(&TIM3_Handler))
-//    {
-//         HAL_TIM_Base_Stop_IT(&TIM3_Handler); 	/* 禁能中断 */
 
-//        /* 先关闭中断，再执行回调函数。因为回调函数可能需要重启定时器 */
-//        s_TIM_CallBack();
-//    }
-//}
+void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
+{  
+
+		if(htim->Instance==TIM3)
+    {
+        if(htim->Channel==HAL_TIM_ACTIVE_CHANNEL_2)
+        {
+					 HAL_TIM_OC_Stop_IT(&TIM3_Handler, TIM_CHANNEL_2); 	/* 禁能中断 */
+
+		/* 先关闭中断，再执行回调函数。因为回调函数可能需要重启定时器 */
+					 s_TIM_CallBack2();
+        }
+        if(htim->Channel==HAL_TIM_ACTIVE_CHANNEL_3)
+        {
+					 HAL_TIM_OC_Stop_IT(&TIM3_Handler, TIM_CHANNEL_3); 	/* 禁能中断 */
+
+		/* 先关闭中断，再执行回调函数。因为回调函数可能需要重启定时器 */
+					 s_TIM_CallBack3();
+        }
+    }
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
@@ -244,17 +285,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
-  if (htim->Instance == TIM3) {
-		 HAL_TIM_Base_Stop_IT(&TIM3_Handler); 	/* 禁能中断 */
 
-		/* 先关闭中断，再执行回调函数。因为回调函数可能需要重启定时器 */
-		s_TIM_CallBack();
-  }
 	if (htim->Instance == TIM4) {
 		
 		xSemaphoreGiveFromISR(singleDateDealSemaphore,&xHigherPriorityTaskWoken);	//释放二值信号量
   }
+
   /* USER CODE END Callback 1 */
 }
+
 
 /* USER CODE END 1 */

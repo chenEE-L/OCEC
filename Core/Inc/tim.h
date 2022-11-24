@@ -39,11 +39,12 @@ extern TIM_HandleTypeDef TIM3_Handler;
 
 /* USER CODE END Private defines */
 void TIM3_Init(void);
-
+void TIM5_Init(void);
 void MX_TIM4_Init(void);
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-void bsp_StartHardTimer(uint32_t _uiTimeOut, void * _pCallBack);
+void bsp_StartHardTimer(uint8_t _CC, uint32_t _uiTimeOut, void * _pCallBack);
+
 
 /* USER CODE BEGIN Prototypes */
 

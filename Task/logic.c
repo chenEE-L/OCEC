@@ -36,8 +36,8 @@ void logicControTask(void const * argument)
 				xEventGroupClearBits(logicGroupHandler,logic_sample_end);
 					break;
 				case logic_purge_start:
-					setFlow(&DeviceD,0.25);
-					setFlow(&DeviceC,0.7);
+					setFlow(&DeviceD,0.025);
+					setFlow(&DeviceC,0.07);
 				xEventGroupClearBits(logicGroupHandler,logic_purge_start);
 					//阀5打开
 					break;
@@ -48,8 +48,8 @@ void logicControTask(void const * argument)
 					//阀5关闭
 					break;
 				case logic_OC_start:
-					setFlow(&DeviceD,0.25);
-					setFlow(&DeviceC,0.7);
+					setFlow(&DeviceD,0.025);
+					setFlow(&DeviceC,0.07);
 				xEventGroupClearBits(logicGroupHandler,logic_OC_start);
 					//阀5打开
 					break;
@@ -60,9 +60,9 @@ void logicControTask(void const * argument)
 					//阀5关闭
 					break;
 				case logic_EC_start:
-					setFlow(&DeviceD,0.25);
-					setFlow(&DeviceC,0.40);
-					setFlow(&DeviceB,0.30);
+					setFlow(&DeviceD,0.025);
+					setFlow(&DeviceC,0.040);
+					setFlow(&DeviceB,0.030);
 				  bsp_DoOn(2);
 				xEventGroupClearBits(logicGroupHandler,logic_EC_start);
 					//阀2开启
@@ -76,10 +76,10 @@ void logicControTask(void const * argument)
 					//阀2关闭
 					break;
 				case logic_ration_start:
-					setFlow(&DeviceD,0.25);
-					setFlow(&DeviceC,0.40);
-					setFlow(&DeviceB,0.30);
-					setFlow(&DeviceA,0.15);
+					setFlow(&DeviceD,0.025);
+					setFlow(&DeviceC,0.040);
+					setFlow(&DeviceB,0.030);
+					setFlow(&DeviceA,0.015);
 				xEventGroupClearBits(logicGroupHandler,logic_ration_start);
 					//阀2开启
 					break;
@@ -92,9 +92,9 @@ void logicControTask(void const * argument)
 					//阀2关闭
 					break;
 				case logic_calibration_start:
-					setFlow(&DeviceD,0.25);
-					setFlow(&DeviceC,0.40);
-					setFlow(&DeviceB,0.30);
+					setFlow(&DeviceD,0.025);
+					setFlow(&DeviceC,0.040);
+					setFlow(&DeviceB,0.030);
 					setFlow(&DeviceA,0);
 				xEventGroupClearBits(logicGroupHandler,logic_calibration_start);
 					//阀1，3，4开启
