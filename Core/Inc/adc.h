@@ -39,6 +39,7 @@ extern ADC_HandleTypeDef hadc1;
 /* USER CODE END Private defines */
 
 void MX_ADC1_Init(void);
+float laserValueFilter(float value);
 
 /* USER CODE BEGIN Prototypes */
 float hal_ADC_M4_get_value(uint8_t chn);

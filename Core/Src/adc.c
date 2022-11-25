@@ -26,7 +26,8 @@
 //#define ADC_CONVERT_REF_VOLT 3000.0f								//以mV为单位
 #define ADC_CONVERT_REF_VOLT 3.0f								//以mV为单位
 #define ADC_CONVERT_K				 ADC_CONVERT_REF_VOLT/ADC_CONVERT_SCALE
-volatile uint16_t ADC_ConvertedValue[2];
+//volatile uint16_t ADC_ConvertedValue[2];
+volatile float laser_value;
 
 /* USER CODE END 0 */
 
@@ -151,54 +152,114 @@ uint16_t Get_Adc(uint32_t ch)
 	return (uint16_t)HAL_ADC_GetValue(&hadc1);	        	//返回最近一次ADC1规则组的转换结果
 }
 
+//#define ADC_FILTERVALUE_MAX_CNT 20
+
+//static uint16_t ADC_FilterValue[2][ADC_FILTERVALUE_MAX_CNT];
+//static uint16_t ADC_FilterVlaue_Cnt[2];
+
+////滚动存储
+//void hal_ADC_M4_Filter_Cycle_Save(uint8_t chn)
+//{
+//	uint16_t i;
+//	uint16_t tmp_code;
+//	uint16_t tmp_cnt;
+//	ADC_FilterVlaue_Cnt[chn]++;
+//	if(ADC_FilterVlaue_Cnt[chn]>ADC_FILTERVALUE_MAX_CNT){
+//		ADC_FilterVlaue_Cnt[chn]=ADC_FILTERVALUE_MAX_CNT;	
+//	}
+//	tmp_code = ADC_ConvertedValue[chn];
+//	tmp_cnt  = ADC_FilterVlaue_Cnt[chn];
+//	//滚动存储
+//	if(tmp_cnt<ADC_FILTERVALUE_MAX_CNT)	{
+//			ADC_FilterValue[chn][tmp_cnt]=tmp_code;
+//	}
+//	else{
+//		for(i=0;i<ADC_FILTERVALUE_MAX_CNT-1;i++){
+//			ADC_FilterValue[chn][i]=ADC_FilterValue[chn][i+1];
+//		}
+//		ADC_FilterValue[chn][ADC_FILTERVALUE_MAX_CNT-1] = tmp_code;
+//	}
+//}
+
+////滤波处理
+//uint16_t hal_ADC_M4_Filter_handle(uint8_t chn)
+//{
+//	uint16_t tmp_rtn;
+//	uint16_t tmp_cnt;
+//	uint16_t i;
+//	uint32_t tmp_val;
+//	uint16_t tmp_code_dat[ADC_FILTERVALUE_MAX_CNT];
+
+//	//滑动存储
+//	hal_ADC_M4_Filter_Cycle_Save(chn);
+
+//	//滤波计算
+//	tmp_val = 0;
+//	tmp_rtn = 0;
+//	tmp_cnt = ADC_FilterVlaue_Cnt[chn];
+//	//缓存切换
+//	for(i=0;i<ADC_FILTERVALUE_MAX_CNT;i++){
+//		tmp_code_dat[i] = ADC_FilterValue[chn][i];
+//	}
+
+//	//采用滑动平均值方式滤波
+//	for(i=0;i<tmp_cnt;i++){
+//		tmp_val+=tmp_code_dat[i];
+//	}
+//	if(tmp_cnt!= 0){
+//		tmp_rtn = tmp_val/tmp_cnt;
+//	}
+//	return tmp_rtn;
+//}
+
 #define ADC_FILTERVALUE_MAX_CNT 20
 
-static uint16_t ADC_FilterValue[2][ADC_FILTERVALUE_MAX_CNT];
-static uint16_t ADC_FilterVlaue_Cnt[2];
+static float ADC_FilterValue[ADC_FILTERVALUE_MAX_CNT];
+static uint16_t ADC_FilterVlaue_Cnt;
 
 //滚动存储
-void hal_ADC_M4_Filter_Cycle_Save(uint8_t chn)
+void hal_ADC_M4_Filter_Cycle_Save()
 {
 	uint16_t i;
-	uint16_t tmp_code;
+	float tmp_code;
 	uint16_t tmp_cnt;
-	ADC_FilterVlaue_Cnt[chn]++;
-	if(ADC_FilterVlaue_Cnt[chn]>ADC_FILTERVALUE_MAX_CNT){
-		ADC_FilterVlaue_Cnt[chn]=ADC_FILTERVALUE_MAX_CNT;	
+	ADC_FilterVlaue_Cnt++;
+	if(ADC_FilterVlaue_Cnt>ADC_FILTERVALUE_MAX_CNT){
+		ADC_FilterVlaue_Cnt=ADC_FILTERVALUE_MAX_CNT;	
 	}
-	tmp_code = ADC_ConvertedValue[chn];
-	tmp_cnt  = ADC_FilterVlaue_Cnt[chn];
+	tmp_code = laser_value;
+	tmp_cnt  = ADC_FilterVlaue_Cnt;
 	//滚动存储
 	if(tmp_cnt<ADC_FILTERVALUE_MAX_CNT)	{
-			ADC_FilterValue[chn][tmp_cnt]=tmp_code;
+			ADC_FilterValue[tmp_cnt]=tmp_code;
 	}
 	else{
 		for(i=0;i<ADC_FILTERVALUE_MAX_CNT-1;i++){
-			ADC_FilterValue[chn][i]=ADC_FilterValue[chn][i+1];
+			ADC_FilterValue[i]=ADC_FilterValue[i+1];
 		}
-		ADC_FilterValue[chn][ADC_FILTERVALUE_MAX_CNT-1] = tmp_code;
+		ADC_FilterValue[ADC_FILTERVALUE_MAX_CNT-1] = tmp_code;
 	}
 }
 
 //滤波处理
-uint16_t hal_ADC_M4_Filter_handle(uint8_t chn)
+float hal_ADC_M4_Filter_handle()
 {
-	uint16_t tmp_rtn;
+	float tmp_rtn;
 	uint16_t tmp_cnt;
 	uint16_t i;
-	uint32_t tmp_val;
-	uint16_t tmp_code_dat[ADC_FILTERVALUE_MAX_CNT];
+	float tmp_val;
+	float tmp_code_dat[ADC_FILTERVALUE_MAX_CNT];
 
 	//滑动存储
-	hal_ADC_M4_Filter_Cycle_Save(chn);
+	hal_ADC_M4_Filter_Cycle_Save();
 
 	//滤波计算
 	tmp_val = 0;
 	tmp_rtn = 0;
-	tmp_cnt = ADC_FilterVlaue_Cnt[chn];
+	tmp_cnt = ADC_FilterVlaue_Cnt;
 	//缓存切换
 	for(i=0;i<ADC_FILTERVALUE_MAX_CNT;i++){
-		tmp_code_dat[i] = ADC_FilterValue[chn][i];
+		tmp_code_dat[i] = ADC_FilterValue[i];
 	}
 
 	//采用滑动平均值方式滤波
@@ -210,24 +271,38 @@ uint16_t hal_ADC_M4_Filter_handle(uint8_t chn)
 	}
 	return tmp_rtn;
 }
-
 //得到通道采集电压值
+//float hal_ADC_M4_get_value(uint8_t chn)
+//{
+//	float v;
+//	if(chn == 0)
+//	{
+//		ADC_ConvertedValue[chn]=Get_Adc(ADC_CHANNEL_11);
+//	}
+//	if(chn == 1)
+//	{
+//		ADC_ConvertedValue[chn]=Get_Adc(ADC_CHANNEL_10);
+//	}
+//	v = ADC_ConvertedValue[chn];
+////	v = (float)hal_ADC_M4_Filter_handle(chn);
+//	v*= ADC_CONVERT_K;
+//	return v;
+//}
 float hal_ADC_M4_get_value(uint8_t chn)
 {
 	float v;
-	if(chn == 0)
-	{
-		ADC_ConvertedValue[chn]=Get_Adc(ADC_CHANNEL_11);
-	}
-	if(chn == 1)
-	{
-		ADC_ConvertedValue[chn]=Get_Adc(ADC_CHANNEL_10);
-	}
-	v = ADC_ConvertedValue[chn];
+
+	v = Get_Adc(ADC_CHANNEL_10);
 //	v = (float)hal_ADC_M4_Filter_handle(chn);
 	v*= ADC_CONVERT_K;
 	return v;
 }
 
-
+float laserValueFilter(float value)
+{
+	float v;
+	laser_value=value;
+	v = (float)hal_ADC_M4_Filter_handle(); 
+	return v;
+}
 /* USER CODE END 1 */

@@ -91,7 +91,7 @@ void analogCollectTask(void const * argument)
   float value = 0;	 			//采集值加和
 	float H_value_av = 0;  //高电平平均采集值
 	float L_value_av = 0;	//低电平平均采集值
-
+	float tem_sigle;
 	BaseType_t err=pdFALSE;
 
   for(;;)
@@ -155,7 +155,8 @@ void analogCollectTask(void const * argument)
 				}
 					
 				if(H_value_av > L_value_av){
-				per.signal = (H_value_av - L_value_av)*10000; //100uV
+				tem_sigle = (H_value_av - L_value_av)*10000; //100uV
+				per.signal = laserValueFilter(tem_sigle);
 					
 				}  //高电平大于低电平信号则做差
 

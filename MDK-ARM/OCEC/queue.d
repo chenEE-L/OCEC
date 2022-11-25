@@ -1,0 +1,15 @@
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/queue.c
+ocec\queue.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+ocec\queue.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+ocec\queue.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+ocec\queue.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+ocec\queue.o: ../Core/Inc/FreeRTOSConfig.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM3/portmacro.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+ocec\queue.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h

@@ -50,7 +50,7 @@ void MX_TIM4_Init(void)
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 	
-	HAL_TIM_Base_Start_IT(&htim4); //使能定时器4和定时器4更新中断：TIM_IT_UPDATE   
+//	HAL_TIM_Base_Start_IT(&htim4); //使能定时器4和定时器4更新中断：TIM_IT_UPDATE   
 
   if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
   {
@@ -72,7 +72,7 @@ void MX_TIM4_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN TIM4_Init 2 */
-    HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);//开启PWM通道2
+    HAL_TIM_PWM_Start_IT(&htim4,TIM_CHANNEL_2);//开启PWM通道2
 
   /* USER CODE END TIM4_Init 2 */
   HAL_TIM_MspPostInit(&htim4);
